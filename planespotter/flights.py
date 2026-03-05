@@ -1,5 +1,3 @@
-"""Polls the OpenSky Network API for aircraft near Lawica Airport (EPPO)."""
-
 import asyncio
 import logging
 from dataclasses import dataclass
@@ -10,7 +8,6 @@ logger = logging.getLogger(__name__)
 
 OPENSKY_URL = "https://opensky-network.org/api/states/all"
 
-# Bounding box around Lawica Airport, Poznan
 BBOX = {
     "lamin": 52.35,
     "lamax": 52.50,
@@ -18,7 +15,7 @@ BBOX = {
     "lomax": 16.95,
 }
 
-POLL_INTERVAL = 15  # seconds
+POLL_INTERVAL = 15  # in seconds
 
 
 @dataclass
@@ -71,7 +68,7 @@ class Aircraft:
 
 
 class FlightTracker:
-    def __init__(self):
+    def __init__(self) -> None:
         self.aircraft: list[Aircraft] = []
         self._running = False
 

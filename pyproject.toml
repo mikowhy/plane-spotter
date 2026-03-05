@@ -19,12 +19,30 @@ dependencies = [
     "jinja2",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "mypy",
+    "pytest",
+    "pytest-asyncio",
+]
+
 [tool.black]
 line-length = 120
 
 [tool.isort]
 profile = "black"
 line_length = 120
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
 
 [project.urls]
 Repository = "https://github.com/mikowhy/plane-spotter"

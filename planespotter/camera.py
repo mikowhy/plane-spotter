@@ -1,5 +1,3 @@
-"""MJPEG streaming from Pi Camera using picamera2."""
-
 import io
 import logging
 import threading
@@ -18,8 +16,6 @@ try:
     from picamera2.outputs import FileOutput
 
     class StreamingOutput(io.BufferedIOBase):
-        """Thread-safe output for sharing frames across multiple clients."""
-
         def __init__(self) -> None:
             self.frame: bytes | None = None
             self.condition = threading.Condition()
@@ -50,19 +46,14 @@ try:
             logger.info("Camera stopped")
 
         def stream_frames(self) -> Generator[bytes, None, None]:
-            """Generator yielding MJPEG frames."""
             while True:
                 with self._output.condition:
                     self._output.condition.wait()
                     frame = self._output.frame
                 if frame:
-                    yield (
-                        b"--frame\r\n"
-                        b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
-                    )
+                    yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
 
         def save_snapshot(self, path: str) -> None:
-            """Save current frame as JPEG."""
             with self._output.condition:
                 self._output.condition.wait()
                 frame = self._output.frame
@@ -78,7 +69,7 @@ except (ImportError, Exception):
         b"\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00"
         b"\xff\xdb\x00C\x00\x08\x06\x06\x07\x06\x05\x08\x07\x07\x07\t\t"
         b"\x08\n\x0c\x14\r\x0c\x0b\x0b\x0c\x19\x12\x13\x0f\x14\x1d\x1a"
-        b"\x1f\x1e\x1d\x1a\x1c\x1c $.\' \",#\x1c\x1c(7),01444\x1f\'9=82<.342"
+        b"\x1f\x1e\x1d\x1a\x1c\x1c $.' \",#\x1c\x1c(7),01444\x1f'9=82<.342"
         b"\xff\xc0\x00\x0b\x08\x00\x01\x00\x01\x01\x01\x11\x00"
         b"\xff\xc4\x00\x1f\x00\x00\x01\x05\x01\x01\x01\x01\x01\x01\x00"
         b"\x00\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b"
@@ -86,20 +77,20 @@ except (ImportError, Exception):
         b"\xff\xd9"
     )
 
+    def save_snapshot(path: str) -> None:
+        Path(path).write_bytes(_PLACEHOLDER)
+
     class Camera:
-        def start(self) -> None:
+        @staticmethod
+        def start() -> None:
             logger.info("Stub camera started")
 
-        def stop(self) -> None:
+        @staticmethod
+        def stop() -> None:
             logger.info("Stub camera stopped")
 
-        def stream_frames(self) -> Generator[bytes, None, None]:
+        @staticmethod
+        def stream_frames() -> Generator[bytes, None, None]:
             while True:
-                yield (
-                    b"--frame\r\n"
-                    b"Content-Type: image/jpeg\r\n\r\n" + _PLACEHOLDER + b"\r\n"
-                )
+                yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + _PLACEHOLDER + b"\r\n")
                 time.sleep(1.0 / FRAMERATE)
-
-        def save_snapshot(self, path: str) -> None:
-            Path(path).write_bytes(_PLACEHOLDER)

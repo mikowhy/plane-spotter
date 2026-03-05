@@ -31,3 +31,29 @@ pip install .
 ```
 
 See `docs/` for detailed setup guides.
+
+## Development
+
+Install dev dependencies:
+
+```bash
+pip install ".[dev]"
+```
+
+Run tests:
+
+```bash
+pytest tests/ -v
+```
+
+Run linters:
+
+```bash
+black --check planespotter/ tests/
+isort --check planespotter/ tests/
+mypy planespotter/
+```
+
+## CI
+
+GitHub Actions runs lint, type check, and tests on every push and PR to `main`. See `.github/workflows/ci.yml`.

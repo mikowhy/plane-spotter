@@ -76,7 +76,4 @@ def find_approaching(aircraft: list[Aircraft]) -> list[Aircraft]:
 
 def get_nearby(aircraft: list[Aircraft], radius_km: float = ALERT_RADIUS_KM) -> list[Aircraft]:
     """Aircraft within alert radius of observer."""
-    return [
-        ac for ac in aircraft
-        if (d := distance_to_home(ac)) is not None and d <= radius_km
-    ]
+    return [ac for ac in aircraft if (d := distance_to_home(ac)) is not None and d <= radius_km]
