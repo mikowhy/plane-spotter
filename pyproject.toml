@@ -1,0 +1,30 @@
+[project]
+name = "plane-spotter"
+version = "0.1.0"
+description = "Raspberry Pi dashboard showing live camera stream and real-time aircraft data near Lawica Airport (EPPO)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "@mikowhy" },
+]
+
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "gps3",
+    "gpiozero",
+    "aiosqlite",
+    "httpx",
+    "jinja2",
+]
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[project.urls]
+Repository = "https://github.com/mikowhy/plane-spotter"
