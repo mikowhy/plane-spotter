@@ -5,12 +5,12 @@ import logging
 
 import uvicorn
 
+from planespotter import api
 from planespotter.camera import Camera
+from planespotter.database import init_db
 from planespotter.flights import FlightTracker
 from planespotter.gpio import StatusLED
 from planespotter.gps import read_gps
-from planespotter.database import init_db
-from planespotter import api
 
 logging.basicConfig(
     level=logging.INFO,
@@ -41,14 +41,20 @@ async def main() -> None:
     tracker = FlightTracker()
 
     # Wire up API
-    api.setup(cam, tracker)
+    api.setup(
+        cam=cam,
+        trk=tracker,
+    )
 
     # Start LED
     led = StatusLED()
 
     # Run all tasks
     config = uvicorn.Config(
-        api.app, host="0.0.0.0", port=8000, log_level="info"
+        api.app,
+        host="0.0.0.0",
+        port=8000,
+        log_level="info",
     )
     server = uvicorn.Server(config)
 

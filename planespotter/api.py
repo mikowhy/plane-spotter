@@ -84,4 +84,7 @@ async def location() -> dict:
 
 @app.get("/history")
 async def history(limit: int = 50, offset: int = 0) -> list[dict]:
-    return await get_history(limit=limit, offset=offset)
+    return await get_history(
+        limit=limit,
+        offset=offset,
+    )

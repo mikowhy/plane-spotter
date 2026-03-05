@@ -18,6 +18,7 @@ def read_gps() -> tuple[float, float]:
     # Try live GPS
     try:
         from gps3 import agps3
+
         gps_socket = agps3.GPSDSocket()
         data_stream = agps3.DataStream()
         gps_socket.connect()

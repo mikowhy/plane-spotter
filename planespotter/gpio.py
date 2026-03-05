@@ -1,5 +1,3 @@
-"""Status LED and button control via GPIO."""
-
 import logging
 from collections.abc import Callable
 
@@ -9,7 +7,8 @@ LED_PIN = 17
 BUTTON_PIN = 27
 
 try:
-    from gpiozero import LED, Button as GpioButton
+    from gpiozero import LED
+    from gpiozero import Button as GpioButton
 
     class StatusLED:
         def __init__(self) -> None:
