@@ -2,6 +2,7 @@
 
 import json
 import logging
+import signal
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -14,10 +15,14 @@ DEFAULT_LON = 16.863415
 
 
 def read_gps() -> tuple[float, float]:
-    """Try to read GPS coordinates, fall back to saved config or defaults."""
-    # Try live GPS
+    def _timeout_handler(signum: int, frame: object) -> None:
+        raise TimeoutError("GPS read timed out")
+
     try:
         from gps3 import agps3
+
+        old_handler = signal.signal(signal.SIGALRM, _timeout_handler)
+        signal.alarm(5)
 
         gps_socket = agps3.GPSDSocket()
         data_stream = agps3.DataStream()
@@ -31,6 +36,8 @@ def read_gps() -> tuple[float, float]:
                 lon = data_stream.lon
                 if lat != "n/a" and lon != "n/a":
                     lat, lon = float(lat), float(lon)
+                    signal.alarm(0)
+                    signal.signal(signal.SIGALRM, old_handler)
                     save_config(
                         lat=lat,
                         lon=lon,
@@ -39,6 +46,8 @@ def read_gps() -> tuple[float, float]:
                     return lat, lon
     except Exception as e:
         logger.warning("GPS not available: %s", e)
+    finally:
+        signal.alarm(0)
 
     # Fall back to saved config
     if CONFIG_PATH.exists():
