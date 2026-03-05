@@ -43,7 +43,13 @@ def is_on_approach(ac: Aircraft) -> bool:
     # Below 1500m and heading roughly matches approach
     if ac.baro_altitude > 1500:
         return False
-    if heading_diff(ac.true_track, APPROACH_HEADING) > 30:
+    if (
+        heading_diff(
+            h1=ac.true_track,
+            h2=APPROACH_HEADING,
+        )
+        > 30
+    ):
         return False
     return True
 
@@ -52,7 +58,12 @@ def distance_to_home(ac: Aircraft) -> float | None:
     """Distance in km from aircraft to observer. None if no position."""
     if ac.latitude is None or ac.longitude is None:
         return None
-    return haversine(HOME_LAT, HOME_LON, ac.latitude, ac.longitude)
+    return haversine(
+        lat1=HOME_LAT,
+        lon1=HOME_LON,
+        lat2=ac.latitude,
+        lon2=ac.longitude,
+    )
 
 
 def find_closest(aircraft: list[Aircraft]) -> Aircraft | None:

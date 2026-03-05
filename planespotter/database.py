@@ -57,7 +57,7 @@ async def log_flight(
         row = await cursor.fetchone()
 
         if row:
-            flight_id = row[0]
+            flight_id: int = row[0]
             await db.execute(
                 """UPDATE flights SET
                    last_seen = datetime('now'),
@@ -72,6 +72,7 @@ async def log_flight(
                    VALUES (?, ?, ?, ?, ?, ?)""",
                 (icao24, callsign, origin_country, altitude, distance, int(on_approach)),
             )
+            assert cursor.lastrowid is not None
             flight_id = cursor.lastrowid
 
         await db.commit()
