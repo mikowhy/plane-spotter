@@ -20,7 +20,10 @@ logger = logging.getLogger(__name__)
 
 
 async def led_heartbeat(led: StatusLED) -> None:
-    led.blink(on_time=0.5, off_time=2.0)
+    led.blink(
+        on_time=0.5,
+        off_time=2.0,
+    )
     while True:
         await asyncio.sleep(60)
 

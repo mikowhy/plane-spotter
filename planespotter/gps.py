@@ -31,7 +31,10 @@ def read_gps() -> tuple[float, float]:
                 lon = data_stream.lon
                 if lat != "n/a" and lon != "n/a":
                     lat, lon = float(lat), float(lon)
-                    save_config(lat, lon)
+                    save_config(
+                        lat=lat,
+                        lon=lon,
+                    )
                     logger.info("GPS fix: %.6f, %.6f", lat, lon)
                     return lat, lon
     except Exception as e:
@@ -49,7 +52,10 @@ def read_gps() -> tuple[float, float]:
 
     # Fall back to defaults
     logger.info("Using default coordinates: %.6f, %.6f", DEFAULT_LAT, DEFAULT_LON)
-    save_config(DEFAULT_LAT, DEFAULT_LON)
+    save_config(
+        lat=DEFAULT_LAT,
+        lon=DEFAULT_LON,
+    )
     return DEFAULT_LAT, DEFAULT_LON
 
 
