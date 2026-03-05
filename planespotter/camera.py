@@ -56,14 +56,20 @@ class _StreamingOutput:
 class Camera:
     def __init__(self) -> None:
         if _picam2_class:
-            self._picam2: Any = _picam2_class()
-            config = self._picam2.create_video_configuration(
-                main={"size": RESOLUTION},
-                controls={"FrameRate": FRAMERATE},
-            )
-            self._picam2.configure(config)
-            self._output: _StreamingOutput | None = _StreamingOutput()
-            self._encoder: Any = _mjpeg_encoder_class()
+            try:
+                self._picam2: Any = _picam2_class()
+                config = self._picam2.create_video_configuration(
+                    main={"size": RESOLUTION},
+                    controls={"FrameRate": FRAMERATE},
+                )
+                self._picam2.configure(config)
+                self._output: _StreamingOutput | None = _StreamingOutput()
+                self._encoder: Any = _mjpeg_encoder_class()
+            except Exception as e:
+                logger.warning("Camera not available: %s", e)
+                self._picam2 = None
+                self._output = None
+                self._encoder = None
         else:
             self._picam2 = None
             self._output = None
