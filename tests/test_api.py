@@ -1,5 +1,3 @@
-"""Tests for the API endpoints."""
-
 from unittest.mock import MagicMock
 
 from fastapi.testclient import TestClient

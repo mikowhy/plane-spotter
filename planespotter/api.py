@@ -5,10 +5,10 @@ from fastapi.responses import FileResponse, HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+from planespotter import matcher
 from planespotter.camera import Camera
 from planespotter.database import get_history
 from planespotter.flights import FlightTracker
-from planespotter import matcher
 from planespotter.matcher import find_approaching, get_nearby
 
 app = FastAPI(title="Plane Spotter")

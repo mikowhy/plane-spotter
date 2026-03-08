@@ -1,5 +1,3 @@
-"""Tests for the matcher module."""
-
 from typing import Any
 
 from planespotter.flights import Aircraft

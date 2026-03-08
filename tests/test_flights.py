@@ -1,5 +1,3 @@
-"""Tests for the flights module."""
-
 from planespotter.flights import Aircraft
 
 
@@ -40,8 +38,23 @@ class TestAircraftFromStateVector:
 
     def test_none_callsign(self) -> None:
         state_vector = [
-            "abc123", None, "Poland", 0, 0, 16.0, 52.0,
-            300.0, False, 70.0, 288.0, -3.0, None, 310.0, None, False, 0,
+            "abc123",
+            None,
+            "Poland",
+            0,
+            0,
+            16.0,
+            52.0,
+            300.0,
+            False,
+            70.0,
+            288.0,
+            -3.0,
+            None,
+            310.0,
+            None,
+            False,
+            0,
         ]
         aircraft = Aircraft.from_state_vector(state_vector)
         assert aircraft.callsign is None

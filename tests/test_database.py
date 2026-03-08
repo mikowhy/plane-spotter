@@ -1,5 +1,3 @@
-"""Tests for the database module."""
-
 from pathlib import Path
 
 import pytest
