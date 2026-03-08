@@ -8,7 +8,8 @@ from fastapi.templating import Jinja2Templates
 from planespotter.camera import Camera
 from planespotter.database import get_history
 from planespotter.flights import FlightTracker
-from planespotter.matcher import AIRPORT_LAT, AIRPORT_LON, HOME_LAT, HOME_LON, find_approaching, get_nearby
+from planespotter import matcher
+from planespotter.matcher import find_approaching, get_nearby
 
 app = FastAPI(title="Plane Spotter")
 
@@ -38,23 +39,29 @@ camera: Camera | None = None
 tracker: FlightTracker | None = None
 
 
-def setup(cam: Camera, trk: FlightTracker) -> None:
+def setup(camera_instance: Camera, tracker_instance: FlightTracker) -> None:
     global camera, tracker
-    camera = cam
-    tracker = trk
+    camera = camera_instance
+    tracker = tracker_instance
 
 
 @app.get("/", response_class=HTMLResponse)
 async def dashboard(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard.html",
+    )
 
 
 @app.get("/stream")
 async def stream() -> StreamingResponse:
     if camera is None:
-        return StreamingResponse(iter([]), status_code=503)
+        return StreamingResponse(
+            content=iter([]),
+            status_code=503,
+        )
     return StreamingResponse(
-        camera.stream_frames(),
+        content=camera.stream_frames(),
         media_type="multipart/x-mixed-replace; boundary=frame",
     )
 
@@ -69,9 +76,9 @@ async def flights() -> dict:
     nearby = get_nearby(all_aircraft)
 
     return {
-        "aircraft": [ac.to_dict() for ac in all_aircraft],
-        "approaching": [ac.to_dict() for ac in approaching],
-        "nearby": [ac.to_dict() for ac in nearby],
+        "aircraft": [plane.to_dict() for plane in all_aircraft],
+        "approaching": [plane.to_dict() for plane in approaching],
+        "nearby": [plane.to_dict() for plane in nearby],
     }
 
 
@@ -83,14 +90,14 @@ async def location() -> dict:
             {
                 "type": "Feature",
                 "properties": {"name": "Home", "icon": "home"},
-                "geometry": {"type": "Point", "coordinates": [HOME_LON, HOME_LAT]},
+                "geometry": {"type": "Point", "coordinates": [matcher.HOME_LON, matcher.HOME_LAT]},
             },
             {
                 "type": "Feature",
                 "properties": {"name": "Lawica Airport (EPPO)", "icon": "airport"},
                 "geometry": {
                     "type": "Point",
-                    "coordinates": [AIRPORT_LON, AIRPORT_LAT],
+                    "coordinates": [matcher.AIRPORT_LON, matcher.AIRPORT_LAT],
                 },
             },
         ],

@@ -64,8 +64,8 @@ class Camera:
                 self._picam2.configure(config)
                 self._output: _StreamingOutput | None = _StreamingOutput()
                 self._encoder: Any = _mjpeg_encoder_class()
-            except Exception as e:
-                logger.warning("Camera not available: %s", e)
+            except Exception as error:
+                logger.warning("Camera not available: %s", error)
                 self._picam2 = None
                 self._output = None
                 self._encoder = None

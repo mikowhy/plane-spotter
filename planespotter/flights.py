@@ -34,20 +34,20 @@ class Aircraft:
     squawk: str | None
 
     @classmethod
-    def from_state_vector(cls, sv: list) -> "Aircraft":
+    def from_state_vector(cls, state_vector: list) -> "Aircraft":
         return cls(
-            icao24=sv[0],
-            callsign=sv[1].strip() if sv[1] else None,
-            origin_country=sv[2],
-            longitude=sv[5],
-            latitude=sv[6],
-            baro_altitude=sv[7],
-            on_ground=sv[8],
-            velocity=sv[9],
-            true_track=sv[10],
-            vertical_rate=sv[11],
-            geo_altitude=sv[13],
-            squawk=sv[14],
+            icao24=state_vector[0],
+            callsign=state_vector[1].strip() if state_vector[1] else None,
+            origin_country=state_vector[2],
+            longitude=state_vector[5],
+            latitude=state_vector[6],
+            baro_altitude=state_vector[7],
+            on_ground=state_vector[8],
+            velocity=state_vector[9],
+            true_track=state_vector[10],
+            vertical_rate=state_vector[11],
+            geo_altitude=state_vector[13],
+            squawk=state_vector[14],
         )
 
     def to_dict(self) -> dict:
@@ -75,18 +75,21 @@ class FlightTracker:
     async def fetch_once(self) -> list[Aircraft]:
         async with httpx.AsyncClient(timeout=10) as client:
             try:
-                resp = await client.get(OPENSKY_URL, params=BBOX)
+                resp = await client.get(
+                    url=OPENSKY_URL,
+                    params=BBOX,
+                )
                 resp.raise_for_status()
                 data = resp.json()
-            except (httpx.HTTPError, Exception) as e:
-                logger.error("OpenSky API error: %s", e)
+            except (httpx.HTTPError, Exception) as error:
+                logger.error("OpenSky API error: %s", error)
                 return self.aircraft  # return cached data on error
 
         states = data.get("states") or []
         self.aircraft = [
-            Aircraft.from_state_vector(sv)
-            for sv in states
-            if sv[5] is not None and sv[6] is not None  # skip if no position
+            Aircraft.from_state_vector(state_vector)
+            for state_vector in states
+            if state_vector[5] is not None and state_vector[6] is not None  # skip if no position
         ]
         logger.info("Fetched %d aircraft", len(self.aircraft))
         return self.aircraft

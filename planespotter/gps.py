@@ -18,6 +18,7 @@ def read_gps() -> tuple[float, float]:
     def _timeout_handler(signum: int, frame: object) -> None:
         raise TimeoutError("GPS read timed out")
 
+    gps_socket = None
     try:
         from gps3 import agps3
 
@@ -44,20 +45,25 @@ def read_gps() -> tuple[float, float]:
                     )
                     logger.info("GPS fix: %.6f, %.6f", lat, lon)
                     return lat, lon
-    except Exception as e:
-        logger.warning("GPS not available: %s", e)
+    except Exception as error:
+        logger.warning("GPS not available: %s", error)
     finally:
         signal.alarm(0)
+        if gps_socket is not None:
+            try:
+                gps_socket.close()
+            except Exception:
+                pass
 
     # Fall back to saved config
     if CONFIG_PATH.exists():
         try:
-            cfg = json.loads(CONFIG_PATH.read_text())
-            lat, lon = cfg["lat"], cfg["lon"]
+            config = json.loads(CONFIG_PATH.read_text())
+            lat, lon = config["lat"], config["lon"]
             logger.info("Using saved coordinates: %.6f, %.6f", lat, lon)
             return lat, lon
-        except (KeyError, json.JSONDecodeError) as e:
-            logger.warning("Config file invalid: %s", e)
+        except (KeyError, json.JSONDecodeError) as error:
+            logger.warning("Config file invalid: %s", error)
 
     # Fall back to defaults
     logger.info("Using default coordinates: %.6f, %.6f", DEFAULT_LAT, DEFAULT_LON)

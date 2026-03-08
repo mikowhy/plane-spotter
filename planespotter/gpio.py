@@ -22,7 +22,11 @@ except (ImportError, Exception):
 
 class StatusLED:
     def __init__(self) -> None:
-        self._led: Any = _led_class(LED_PIN) if _led_class else None
+        try:
+            self._led: Any = _led_class(LED_PIN) if _led_class else None
+        except Exception as error:
+            logger.warning("LED not available: %s", error)
+            self._led = None
 
     def on(self) -> None:
         if self._led:
@@ -49,10 +53,16 @@ class StatusLED:
 class Button:
     def __init__(self, callback: Callable[[], None] | None = None) -> None:
         self._callback = callback
-        if _button_class:
-            self._button: Any = _button_class(
-                BUTTON_PIN,
-                pull_up=True,
-            )
-            if callback:
-                self._button.when_pressed = callback
+        try:
+            if _button_class:
+                self._button: Any = _button_class(
+                    BUTTON_PIN,
+                    pull_up=True,
+                )
+                if callback:
+                    self._button.when_pressed = callback
+            else:
+                self._button = None
+        except Exception as error:
+            logger.warning("Button not available: %s", error)
+            self._button = None
