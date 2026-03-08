@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.responses import FileResponse, HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -17,7 +17,22 @@ static_dir = Path(__file__).parent / "static"
 
 templates = Jinja2Templates(directory=str(templates_dir))
 if static_dir.exists():
-    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+    app.mount(
+        path="/static",
+        app=StaticFiles(directory=str(static_dir)),
+        name="static",
+    )
+
+favicon_path = static_dir / "favicon.svg"
+
+
+@app.get("/favicon.ico")
+async def favicon() -> FileResponse:
+    return FileResponse(
+        path=str(favicon_path),
+        media_type="image/svg+xml",
+    )
+
 
 camera: Camera | None = None
 tracker: FlightTracker | None = None
