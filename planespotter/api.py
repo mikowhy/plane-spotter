@@ -39,7 +39,10 @@ camera: Camera | None = None
 tracker: FlightTracker | None = None
 
 
-def setup(camera_instance: Camera, tracker_instance: FlightTracker) -> None:
+def setup(
+    camera_instance: Camera | None,
+    tracker_instance: FlightTracker | None,
+) -> None:
     global camera, tracker
     camera = camera_instance
     tracker = tracker_instance
@@ -105,7 +108,10 @@ async def location() -> dict:
 
 
 @app.get("/history")
-async def history(limit: int = 50, offset: int = 0) -> list[dict]:
+async def history(
+    limit: int = 50,
+    offset: int = 0,
+) -> list[dict]:
     return await get_history(
         limit=limit,
         offset=offset,

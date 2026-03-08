@@ -1,13 +1,17 @@
-from unittest.mock import MagicMock
+import asyncio
+from pathlib import Path
+from typing import Any
+from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
 
+from planespotter import database
 from planespotter.api import app, setup
 from planespotter.camera import Camera
 from planespotter.flights import Aircraft, FlightTracker
 
 
-def _make_aircraft(**overrides: dict) -> Aircraft:
+def _make_aircraft(**overrides: Any) -> Aircraft:
     defaults = dict(
         icao24="abc123",
         callsign="TEST123",
@@ -97,7 +101,13 @@ class TestStreamEndpoint:
 
 
 class TestHistoryEndpoint:
-    def test_returns_list(self) -> None:
-        response = client.get("/history")
+    def test_returns_list(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        db_path = tmp_path / "test.db"
+        with patch.object(database, "DB_PATH", db_path):
+            asyncio.run(database.init_db())
+            response = client.get("/history")
         assert response.status_code == 200
         assert isinstance(response.json(), list)
