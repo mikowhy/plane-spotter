@@ -11,6 +11,7 @@ from planespotter.database import init_db
 from planespotter.flights import FlightTracker
 from planespotter.gpio import StatusLED
 from planespotter.gps import read_gps
+from planespotter.matcher import set_home
 
 logging.basicConfig(
     level=logging.INFO,
@@ -29,32 +30,25 @@ async def led_heartbeat(led: StatusLED) -> None:
 
 
 async def main() -> None:
-    # Read GPS (once)
     lat, lon = read_gps()
+    set_home(
+        lat=lat,
+        lon=lon,
+    )
     logger.info("Observer position: %.6f, %.6f", lat, lon)
 
-    # Init database
     await init_db()
 
-    # Start camera
-    cam = Camera()
-    cam.start()
-
-    # Start flight tracker
+    camera = Camera()
+    camera.start()
     tracker = FlightTracker()
-
-    # Wire up API
     api.setup(
-        cam=cam,
-        trk=tracker,
+        camera_instance=camera,
+        tracker_instance=tracker,
     )
-
-    # Start LED
     led = StatusLED()
-
-    # Run all tasks
     config = uvicorn.Config(
-        api.app,
+        app=api.app,
         host="0.0.0.0",
         port=8000,
         log_level="info",
@@ -71,7 +65,7 @@ async def main() -> None:
         logger.info("Shutting down...")
     finally:
         tracker.stop()
-        cam.stop()
+        camera.stop()
         led.off()
 
 

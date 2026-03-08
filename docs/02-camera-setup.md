@@ -39,7 +39,7 @@ For the MJPEG stream, use the hardware encoder pipeline:
 
 1. `Picamera2()` with `create_video_configuration(main={"size": (640, 480)})`
 2. `MJPEGEncoder()` -- uses VideoCore GPU, ~50% CPU vs ~95% for software
-3. `StreamingOutput` class with `threading.Condition` for multi-client frame sharing
+3. `_StreamingOutput(io.BufferedIOBase)` class with `threading.Condition` for multi-client frame sharing
 4. `FileOutput(streaming_output)` wired to encoder
 5. `picam2.start_recording(encoder, output)` starts the pipeline
 6. FastAPI `StreamingResponse` with async generator yielding MJPEG frames

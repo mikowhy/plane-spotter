@@ -196,6 +196,17 @@ GPS (UART):
 - [x] Pi configured and accessible via SSH
 - [x] Modules implemented
 - [x] Dashboard working (tested on Mac)
-- [ ] Pi: pip packages installed
-- [ ] Hardware connected
-- [ ] Deployed and tested on Pi
+- [x] CI pipeline (GitHub Actions: lint, typecheck, tests)
+- [x] Coding conventions documented and enforced
+- [x] Pi: pip packages installed
+- [x] Deployed and running on Pi (without camera/GPS hardware)
+- [x] Camera connected and tested
+- [x] GPS wired to matcher (reads position on startup, falls back to defaults)
+- [x] Coding conventions enforced across all modules and tests
+- [x] Favicon (plane SVG icon)
+- [x] systemd autostart service (`planespotter.service`)
+- [x] Test coverage: 42 tests (database, flights, matcher, gps, api)
+- [ ] GPS connected and configured (gpsd) -- hardware
+- [ ] LED + button tested on Pi -- hardware
+- [ ] Snapshot capture on aircraft detection
+- [ ] `/stats` endpoint (daily counts, top airlines)

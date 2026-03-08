@@ -1,0 +1,16 @@
+[Unit]
+Description=Plane Spotter - Aircraft tracking dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/plane-spotter
+Environment=PATH=/home/pi/planespotter-env/bin:/usr/bin:/bin
+ExecStart=/home/pi/planespotter-env/bin/python -m planespotter.main
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

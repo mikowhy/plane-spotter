@@ -1,5 +1,3 @@
-"""Tests for the matcher module."""
-
 from typing import Any
 
 from planespotter.flights import Aircraft
@@ -56,27 +54,27 @@ class TestHaversine:
         assert 2.5 < dist < 3.5
 
     def test_symmetry(self) -> None:
-        d1 = haversine(
+        dist_forward = haversine(
             lat1=52.0,
             lon1=16.0,
             lat2=53.0,
             lon2=17.0,
         )
-        d2 = haversine(
+        dist_reverse = haversine(
             lat1=53.0,
             lon1=17.0,
             lat2=52.0,
             lon2=16.0,
         )
-        assert abs(d1 - d2) < 0.001
+        assert abs(dist_forward - dist_reverse) < 0.001
 
 
 class TestHeadingDiff:
     def test_same_heading(self) -> None:
         assert (
             heading_diff(
-                h1=90,
-                h2=90,
+                heading1=90,
+                heading2=90,
             )
             == 0
         )
@@ -84,8 +82,8 @@ class TestHeadingDiff:
     def test_opposite(self) -> None:
         assert (
             heading_diff(
-                h1=0,
-                h2=180,
+                heading1=0,
+                heading2=180,
             )
             == 180
         )
@@ -93,8 +91,8 @@ class TestHeadingDiff:
     def test_wraparound(self) -> None:
         assert (
             heading_diff(
-                h1=350,
-                h2=10,
+                heading1=350,
+                heading2=10,
             )
             == 20
         )
@@ -102,8 +100,8 @@ class TestHeadingDiff:
     def test_wraparound_reverse(self) -> None:
         assert (
             heading_diff(
-                h1=10,
-                h2=350,
+                heading1=10,
+                heading2=350,
             )
             == 20
         )
@@ -111,40 +109,40 @@ class TestHeadingDiff:
 
 class TestIsOnApproach:
     def test_on_approach(self) -> None:
-        ac = _make_aircraft(baro_altitude=300, true_track=285)
-        assert is_on_approach(ac) is True
+        plane = _make_aircraft(baro_altitude=300, true_track=285)
+        assert is_on_approach(plane) is True
 
     def test_too_high(self) -> None:
-        ac = _make_aircraft(baro_altitude=2000, true_track=288)
-        assert is_on_approach(ac) is False
+        plane = _make_aircraft(baro_altitude=2000, true_track=288)
+        assert is_on_approach(plane) is False
 
     def test_wrong_heading(self) -> None:
-        ac = _make_aircraft(baro_altitude=300, true_track=90)
-        assert is_on_approach(ac) is False
+        plane = _make_aircraft(baro_altitude=300, true_track=90)
+        assert is_on_approach(plane) is False
 
     def test_on_ground(self) -> None:
-        ac = _make_aircraft(on_ground=True, baro_altitude=0, true_track=288)
-        assert is_on_approach(ac) is False
+        plane = _make_aircraft(on_ground=True, baro_altitude=0, true_track=288)
+        assert is_on_approach(plane) is False
 
     def test_no_altitude(self) -> None:
-        ac = _make_aircraft(baro_altitude=None, true_track=288)
-        assert is_on_approach(ac) is False
+        plane = _make_aircraft(baro_altitude=None, true_track=288)
+        assert is_on_approach(plane) is False
 
     def test_no_track(self) -> None:
-        ac = _make_aircraft(baro_altitude=300, true_track=None)
-        assert is_on_approach(ac) is False
+        plane = _make_aircraft(baro_altitude=300, true_track=None)
+        assert is_on_approach(plane) is False
 
 
 class TestDistanceToHome:
     def test_with_position(self) -> None:
-        ac = _make_aircraft(latitude=52.403845, longitude=16.863415)
-        dist = distance_to_home(ac)
+        plane = _make_aircraft(latitude=52.403845, longitude=16.863415)
+        dist = distance_to_home(plane)
         assert dist is not None
         assert dist < 0.01  # basically at home
 
     def test_no_position(self) -> None:
-        ac = _make_aircraft(latitude=None, longitude=None)
-        assert distance_to_home(ac) is None
+        plane = _make_aircraft(latitude=None, longitude=None)
+        assert distance_to_home(plane) is None
 
 
 class TestFindClosest:
