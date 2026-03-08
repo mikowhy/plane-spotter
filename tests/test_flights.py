@@ -5,7 +5,7 @@ from planespotter.flights import Aircraft
 
 class TestAircraftFromStateVector:
     def test_parses_state_vector(self) -> None:
-        sv = [
+        state_vector = [
             "abc123",  # 0: icao24
             "LOT123  ",  # 1: callsign (with whitespace)
             "Poland",  # 2: origin_country
@@ -24,29 +24,32 @@ class TestAircraftFromStateVector:
             False,  # 15: spi
             0,  # 16: position_source
         ]
-        ac = Aircraft.from_state_vector(sv)
-        assert ac.icao24 == "abc123"
-        assert ac.callsign == "LOT123"
-        assert ac.origin_country == "Poland"
-        assert ac.longitude == 16.863
-        assert ac.latitude == 52.404
-        assert ac.baro_altitude == 300.0
-        assert ac.on_ground is False
-        assert ac.velocity == 70.0
-        assert ac.true_track == 288.0
-        assert ac.vertical_rate == -3.0
-        assert ac.geo_altitude == 310.0
-        assert ac.squawk == "1234"
+        aircraft = Aircraft.from_state_vector(state_vector)
+        assert aircraft.icao24 == "abc123"
+        assert aircraft.callsign == "LOT123"
+        assert aircraft.origin_country == "Poland"
+        assert aircraft.longitude == 16.863
+        assert aircraft.latitude == 52.404
+        assert aircraft.baro_altitude == 300.0
+        assert aircraft.on_ground is False
+        assert aircraft.velocity == 70.0
+        assert aircraft.true_track == 288.0
+        assert aircraft.vertical_rate == -3.0
+        assert aircraft.geo_altitude == 310.0
+        assert aircraft.squawk == "1234"
 
     def test_none_callsign(self) -> None:
-        sv = ["abc123", None, "Poland", 0, 0, 16.0, 52.0, 300.0, False, 70.0, 288.0, -3.0, None, 310.0, None, False, 0]
-        ac = Aircraft.from_state_vector(sv)
-        assert ac.callsign is None
+        state_vector = [
+            "abc123", None, "Poland", 0, 0, 16.0, 52.0,
+            300.0, False, 70.0, 288.0, -3.0, None, 310.0, None, False, 0,
+        ]
+        aircraft = Aircraft.from_state_vector(state_vector)
+        assert aircraft.callsign is None
 
 
 class TestAircraftToDict:
     def test_roundtrip(self) -> None:
-        ac = Aircraft(
+        aircraft = Aircraft(
             icao24="abc123",
             callsign="TEST",
             origin_country="Poland",
@@ -60,8 +63,8 @@ class TestAircraftToDict:
             geo_altitude=310.0,
             squawk=None,
         )
-        d = ac.to_dict()
-        assert d["icao24"] == "abc123"
-        assert d["callsign"] == "TEST"
-        assert d["squawk"] is None
-        assert len(d) == 12
+        result = aircraft.to_dict()
+        assert result["icao24"] == "abc123"
+        assert result["callsign"] == "TEST"
+        assert result["squawk"] is None
+        assert len(result) == 12
