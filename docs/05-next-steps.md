@@ -5,12 +5,13 @@
 - [x] Finish `sudo apt upgrade -y`
 - [x] Install system packages (see 01-pi-setup.md)
 - [x] Create Python venv (see 01-pi-setup.md)
-- [ ] Install pip packages: `pip install .` (in progress)
-- [ ] Mount heatsinks on CPU/GPU/RAM
-- [ ] Connect GPIO extension board + ribbon cable
-- [ ] Wire LED (GPIO 17 -> 220R -> LED -> GND) + button (GPIO 27 -> button -> GND)
+- [x] Install pip packages: `pip install .`
+- [x] Mount heatsinks on CPU/GPU/RAM
+- [x] Connect GPIO extension board + ribbon cable
+- [x] Wire LED (GPIO 17 -> 220R -> LED -> GND) + button (GPIO 27 -> button -> GND)
 - [ ] Test LED + button with `gpio.py`
-- [ ] Connect camera FFC cable, test with `rpicam-still` (see 02-camera-setup.md)
+- [x] Connect camera FFC cable, test with `rpicam-still` (see 02-camera-setup.md)
+- [x] Camera streaming works in the app (`io.BufferedIOBase` fix applied)
 - [ ] Connect GPS via UART, configure gpsd, test with `cgps` (see 03-gps-uart-setup.md)
 
 ## On Mac (code development)
@@ -28,19 +29,15 @@ Can be done in parallel -- no hardware needed:
 - [x] `main.py` -- asyncio entry point
 - [x] `templates/dashboard.html` -- Leaflet map + stream + flight panel
 - [x] Tested locally on Mac -- dashboard + OpenSky API working
+- [x] Favicon -- plane SVG icon at `/favicon.ico`
+- [x] GPS coordinates wired to matcher (`set_home()` called on startup)
+- [x] Coding conventions enforced across all modules and tests
+- [x] Test coverage: 42 tests (database, flights, matcher, gps, api)
 
-## Suggested Order
+## Remaining
 
-1. Pi: install packages + venv (while upgrade runs)
-2. Mac: scaffolding + `flights.py` + `matcher.py` (no hardware deps)
-3. Pi: heatsinks + camera + GPS wiring
-4. Mac: `database.py` + `api.py` + `dashboard.html`
-5. Pi: test hardware modules
-6. Deploy code to Pi:
-   ```bash
-   git clone https://github.com/mikowhy/plane-spotter.git /home/pi/plane-spotter
-   cd /home/pi/plane-spotter
-   source /home/pi/planespotter-env/bin/activate
-   pip install .
-   ```
-7. Integrate and test end-to-end
+- [ ] **Test LED + button** on the Pi
+- [ ] **Connect GPS** via UART, configure gpsd, test with `cgps` (see 03-gps-uart-setup.md)
+- [x] **systemd autostart** -- `planespotter.service` created (see 07-systemd-autostart.md)
+- [ ] **Snapshot capture** -- save JPG when aircraft enters alert radius, store path in database
+- [ ] **`/stats` endpoint** -- daily flight count, top airlines, top routes

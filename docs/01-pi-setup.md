@@ -29,7 +29,7 @@ Bookworm blocks global pip installs (PEP 668). Use a venv with `--system-site-pa
 ```bash
 python3 -m venv --system-site-packages /home/pi/planespotter-env
 source /home/pi/planespotter-env/bin/activate
-pip install fastapi "uvicorn[standard]" gps3 gpiozero aiosqlite httpx
+pip install fastapi "uvicorn[standard]" gps3 gpiozero aiosqlite httpx jinja2
 ```
 
 > Do NOT pip install picamera2 -- the apt version must match system libcamera.

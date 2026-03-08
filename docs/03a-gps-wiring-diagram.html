@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPS Wiring Diagram</title>
+<style>
+  body { margin: 0; background: #1a1a2e; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: monospace; color: white; }
+  h2 { color: #e0e0e0; margin-bottom: 4px; font-size: 18px; letter-spacing: 2px; }
+  p { color: #888; font-size: 12px; margin-bottom: 24px; }
+  svg { max-width: 100%; }
+</style>
+</head>
+<body>
+<h2>GPS → Extension Board</h2>
+<p>Jumper wire connection diagram</p>
+<svg width="680" height="420" viewBox="0 0 680 420">
+
+  <!-- Extension Board (left) -->
+
+  <rect x="30" y="40" width="160" height="340" rx="8" fill="#c0392b" stroke="#e74c3c" stroke-width="2"/>
+  <text x="110" y="28" text-anchor="middle" fill="#e74c3c" font-size="12" font-family="monospace" font-weight="bold">EXTENSION BOARD</text>
+
+  <!-- Extension board pins (left side labels) -->
+
+<text x="110" y="72" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">3V3</text>
+<text x="110" y="112" text-anchor="middle" fill="white" font-size="11" font-family="monospace">SDA1</text>
+<text x="110" y="152" text-anchor="middle" fill="white" font-size="11" font-family="monospace">SCL1</text>
+<text x="110" y="192" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">TXD0</text>
+<text x="110" y="232" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">RXD0</text>
+<text x="110" y="272" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">GND</text>
+<text x="110" y="312" text-anchor="middle" fill="white" font-size="11" font-family="monospace">GPIO17</text>
+
+  <!-- Extension board right-side pin connectors -->
+
+  <circle cx="195" cy="68" r="7" fill="#ffd700" stroke="#333" stroke-width="1.5"/>
+  <circle cx="195" cy="108" r="7" fill="#555" stroke="#333" stroke-width="1.5"/>
+  <circle cx="195" cy="148" r="7" fill="#555" stroke="#333" stroke-width="1.5"/>
+  <circle cx="195" cy="188" r="7" fill="#ffd700" stroke="#333" stroke-width="1.5"/>
+  <circle cx="195" cy="228" r="7" fill="#ffd700" stroke="#333" stroke-width="1.5"/>
+  <circle cx="195" cy="268" r="7" fill="#ffd700" stroke="#333" stroke-width="1.5"/>
+  <circle cx="195" cy="308" r="7" fill="#555" stroke="#333" stroke-width="1.5"/>
+
+  <!-- Breadboard (middle) -->
+
+  <rect x="250" y="40" width="160" height="340" rx="6" fill="#f5f0e8" stroke="#ccc" stroke-width="2"/>
+  <text x="330" y="28" text-anchor="middle" fill="#aaa" font-size="12" font-family="monospace" font-weight="bold">BREADBOARD</text>
+
+  <!-- Breadboard row labels -->
+
+<text x="265" y="72" fill="#999" font-size="10" font-family="monospace">row A</text>
+<text x="265" y="192" fill="#999" font-size="10" font-family="monospace">row B</text>
+<text x="265" y="232" fill="#999" font-size="10" font-family="monospace">row C</text>
+<text x="265" y="272" fill="#999" font-size="10" font-family="monospace">row D</text>
+<text x="265" y="312" fill="#999" font-size="10" font-family="monospace">row E</text>
+
+  <!-- Breadboard holes for jumpers -->
+
+  <rect x="370" y="60" width="12" height="18" rx="3" fill="#333" stroke="#555" stroke-width="1"/>
+  <rect x="370" y="180" width="12" height="18" rx="3" fill="#333" stroke="#555" stroke-width="1"/>
+  <rect x="370" y="220" width="12" height="18" rx="3" fill="#333" stroke="#555" stroke-width="1"/>
+  <rect x="370" y="260" width="12" height="18" rx="3" fill="#333" stroke="#555" stroke-width="1"/>
+
+  <!-- GPS Module (right) -->
+
+  <rect x="490" y="160" width="160" height="200" rx="8" fill="#e67e22" stroke="#f39c12" stroke-width="2"/>
+  <text x="570" y="148" text-anchor="middle" fill="#f39c12" font-size="12" font-family="monospace" font-weight="bold">GPS NEO-6M</text>
+
+  <!-- GPS pins -->
+
+<text x="570" y="192" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">VCC</text>
+<text x="570" y="232" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">GND</text>
+<text x="570" y="272" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">TXD</text>
+<text x="570" y="312" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">RXD</text>
+<text x="570" y="352" text-anchor="middle" fill="white" font-size="10" font-family="monospace">PPS (skip)</text>
+
+  <!-- GPS left-side pin connectors -->
+
+  <circle cx="488" cy="188" r="7" fill="#ffd700" stroke="#333" stroke-width="1.5"/>
+  <circle cx="488" cy="228" r="7" fill="#ffd700" stroke="#333" stroke-width="1.5"/>
+  <circle cx="488" cy="268" r="7" fill="#ffd700" stroke="#333" stroke-width="1.5"/>
+  <circle cx="488" cy="308" r="7" fill="#ffd700" stroke="#333" stroke-width="1.5"/>
+  <circle cx="488" cy="348" r="7" fill="#555" stroke="#333" stroke-width="1.5"/>
+
+  <!-- WIRE 1: 3V3 → VCC (RED) -->
+
+  <!-- F connector on ext board pin -->
+
+  <rect x="198" y="62" width="14" height="12" rx="2" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <!-- wire through breadboard -->
+  <line x1="205" y1="68" x2="376" y2="68" stroke="#e74c3c" stroke-width="3"/>
+  <!-- M pin in breadboard -->
+  <line x1="376" y1="60" x2="376" y2="76" stroke="#e74c3c" stroke-width="3"/>
+  <!-- wire to GPS -->
+  <line x1="382" y1="68" x2="488" y2="188" stroke="#e74c3c" stroke-width="3" stroke-dasharray="6,3"/>
+  <!-- F connector on GPS VCC pin -->
+  <rect x="474" y="182" width="14" height="12" rx="2" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+
+  <!-- WIRE 2: GND → GND (BLACK) -->
+
+  <rect x="198" y="262" width="14" height="12" rx="2" fill="#2c3e50" stroke="#1a252f" stroke-width="1"/>
+  <line x1="205" y1="268" x2="376" y2="268" stroke="#2c3e50" stroke-width="3"/>
+  <line x1="376" y1="260" x2="376" y2="276" stroke="#2c3e50" stroke-width="3"/>
+  <line x1="382" y1="268" x2="488" y2="228" stroke="#2c3e50" stroke-width="3" stroke-dasharray="6,3"/>
+  <rect x="474" y="222" width="14" height="12" rx="2" fill="#2c3e50" stroke="#1a252f" stroke-width="1"/>
+
+  <!-- WIRE 3: RXD0 → TXD (YELLOW) -->
+
+  <rect x="198" y="222" width="14" height="12" rx="2" fill="#f1c40f" stroke="#d4ac0d" stroke-width="1"/>
+  <line x1="205" y1="228" x2="376" y2="228" stroke="#f1c40f" stroke-width="3"/>
+  <line x1="376" y1="220" x2="376" y2="236" stroke="#f1c40f" stroke-width="3"/>
+  <line x1="382" y1="228" x2="488" y2="268" stroke="#f1c40f" stroke-width="3" stroke-dasharray="6,3"/>
+  <rect x="474" y="262" width="14" height="12" rx="2" fill="#f1c40f" stroke="#d4ac0d" stroke-width="1"/>
+
+  <!-- WIRE 4: TXD0 → RXD (ORANGE) -->
+
+  <rect x="198" y="182" width="14" height="12" rx="2" fill="#e67e22" stroke="#ca6f1e" stroke-width="1"/>
+  <line x1="205" y1="188" x2="376" y2="188" stroke="#e67e22" stroke-width="3"/>
+  <line x1="376" y1="180" x2="376" y2="196" stroke="#e67e22" stroke-width="3"/>
+  <line x1="382" y1="188" x2="488" y2="308" stroke="#e67e22" stroke-width="3" stroke-dasharray="6,3"/>
+  <rect x="474" y="302" width="14" height="12" rx="2" fill="#e67e22" stroke="#ca6f1e" stroke-width="1"/>
+
+  <!-- Legend -->
+
+  <rect x="30" y="395" width="620" height="22" rx="4" fill="#0d0d1a"/>
+  <rect x="40" y="401" width="12" height="10" rx="2" fill="#e74c3c"/>
+  <text x="58" y="411" fill="#ccc" font-size="11" font-family="monospace">3V3 → VCC</text>
+  <rect x="145" y="401" width="12" height="10" rx="2" fill="#2c3e50"/>
+  <text x="163" y="411" fill="#ccc" font-size="11" font-family="monospace">GND → GND</text>
+  <rect x="270" y="401" width="12" height="10" rx="2" fill="#f1c40f"/>
+  <text x="288" y="411" fill="#ccc" font-size="11" font-family="monospace">RXD0 → TXD</text>
+  <rect x="400" y="401" width="12" height="10" rx="2" fill="#e67e22"/>
+  <text x="418" y="411" fill="#ccc" font-size="11" font-family="monospace">TXD0 → RXD</text>
+
+  <!-- F/M labels -->
+
+<text x="202" y="56" fill="#aaa" font-size="9" font-family="monospace">F</text>
+<text x="373" y="58" fill="#aaa" font-size="9" font-family="monospace">M</text>
+
+</svg>
+
+<div style="margin-top: 20px; max-width: 680px; background: #0d0d1a; border-radius: 8px; padding: 16px; font-size: 13px; color: #aaa; line-height: 1.8;">
+  <b style="color: white;">How it works:</b><br>
+  • The <b style="color:#e74c3c">F (female)</b> end → plugs onto the <b>Extension Board pin</b><br>
+  • The wire runs through the breadboard<br>
+  • The <b style="color:#ffd700">M (male)</b> end → plugs into a <b>breadboard hole</b> (same row as the GPS pin)<br>
+  • The GPS module sits in the breadboard — its pins are accessible in the same row
+</div>
+</body>
+</html>

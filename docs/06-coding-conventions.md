@@ -66,6 +66,26 @@ await log_flight(icao24="abc123", callsign="TEST1", origin_country="Poland")
 
 Single-argument calls can stay on one line: `get_history(limit=10)`
 
+## Naming
+
+Use meaningful variable names everywhere -- no single-letter abbreviations:
+
+```python
+# Good
+except Exception as error:
+    logger.warning("GPS not available: %s", error)
+
+for aircraft in all_aircraft:
+    ...
+
+# Bad -- cryptic names
+except Exception as e:
+    logger.warning("GPS not available: %s", e)
+
+for ac in all_aircraft:
+    ...
+```
+
 ## Modern Syntax
 
 Use modern Python 3.10+ syntax:
