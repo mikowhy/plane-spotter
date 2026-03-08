@@ -1,3 +1,4 @@
+import io
 import logging
 import threading
 import time
@@ -39,14 +40,12 @@ _PLACEHOLDER = (
 )
 
 
-class _StreamingOutput:
-    """MJPEG streaming buffer used by picamera2."""
-
+class _StreamingOutput(io.BufferedIOBase):
     def __init__(self) -> None:
         self.frame: bytes | None = None
         self.condition = threading.Condition()
 
-    def write(self, buf: bytes) -> int:
+    def write(self, buf: bytes) -> int:  # type: ignore[override]
         with self.condition:
             self.frame = buf
             self.condition.notify_all()
